@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>DTek Television</title>
+
+<!-- 
+
+    Copyright 2017 Emil Hemdal <emilAThemdalDOTse> and Datateknologsektionen (https://www.dtek.se/)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+    A text version encoded in UTF-8 can be found at /LICENSE.txt
+    A HTML version encoded in UTF-8 can be found at /LICENSE.html
+
+-->
+
+    <style type="text/css">
+
+html, body, div {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+img {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+/*    width: 100%;
+    height: auto;*/
+}
+
+    </style>
+</head>
+<body>
+    <div id="slideshow">
+        <img src="img/image1.jpg">
+        <img src="img/image2.png">
+        <img src="img/image3.svg">
+    </div>
+    <script type="text/javascript">
+
+'use strict';
+
+var slideshow = document.getElementById('slideshow');
+var currentImg = 0;
+
+if(slideshow.children.length > 1) {
+    setInterval(nextImg, 1000);
+    showImg(0);
+}
+
+/**
+ *
+ * nextImg
+ *
+ * Very simple function that triggers the next image to display.
+ * Could be made smaller but that I like its explicitness (if that is even a word).
+ *
+ */
+
+function nextImg() {
+    var newImg = (currentImg + 1 < slideshow.children.length ? currentImg + 1 : 0);
+    showImg(newImg);
+    currentImg = newImg;
+}
+
+/**
+ *
+ * showImg
+ *
+ * Very simple function that display the image with the correct index and hides the other images.
+ *
+ */
+function showImg(index) {
+    for(var i = 0, ii = slideshow.children.length; i < ii; i++) {
+        slideshow.children[i].style.display = (index === i ? "block" : "none");
+    }
+}
+
+    </script>
+</body>
+</html>
