@@ -52,51 +52,7 @@ img {
     </style>
 </head>
 <body>
-    <div id="slideshow">
-        <img src="img/image1.jpg">
-        <img src="img/image2.png">
-        <img src="img/image3.svg">
-    </div>
-    <script type="text/javascript">
-
-'use strict';
-
-var slideshow = document.getElementById('slideshow');
-var currentImg = 0;
-
-if(slideshow.children.length > 1) {
-    setInterval(nextImg, 1000);
-    showImg(0);
-}
-
-/**
- *
- * nextImg
- *
- * Very simple function that triggers the next image to display.
- * Could be made smaller but that I like its explicitness (if that is even a word).
- *
- */
-
-function nextImg() {
-    var newImg = (currentImg + 1 < slideshow.children.length ? currentImg + 1 : 0);
-    showImg(newImg);
-    currentImg = newImg;
-}
-
-/**
- *
- * showImg
- *
- * Very simple function that display the image with the correct index and hides the other images.
- *
- */
-function showImg(index) {
-    for(var i = 0, ii = slideshow.children.length; i < ii; i++) {
-        slideshow.children[i].style.display = (index === i ? "block" : "none");
-    }
-}
-
-    </script>
+    <div id="slideshow"></div>
+    <script type="text/javascript" src="/script.js"></script>
 </body>
 </html>
