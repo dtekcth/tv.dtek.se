@@ -60,7 +60,7 @@
         httpRequest.send();
     }
 
-    setInterval(updateJSON, 900000); // 15 minutes
+    setInterval(updateJSON, 300000); // 5 minutes
     setTimeout(updateJSON, 1000);
 
 })();
