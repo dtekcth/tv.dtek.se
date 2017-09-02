@@ -1,2 +1,5 @@
+config.json
+.Trash*
+node_modules/
 img/*
 currentImages.json

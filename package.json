@@ -1,0 +1,24 @@
+{
+  "name": "tv-dtek-se",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Only a basic jshint test is provided, therefore the test will fail after testing jshint\" && npm run jshint && exit 1",
+    "jshint": "./node_modules/jshint/bin/jshint *.js ./serve/script.js"
+  },
+  "author": "Emil Hemdal",
+  "license": "AGPL-3.0",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "moment": "^2.18.1",
+    "multiparty": "^4.1.3",
+    "mysql": "^2.14.1",
+    "pug": "^2.0.0-rc.3"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.5"
+  }
+}

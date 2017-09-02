@@ -1,0 +1,88 @@
+//-
+
+    Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and 
+    Datateknologsektionen Chalmers Studentkår (https://www.dtek.se/)
+
+    This file is part of tv.dtek.se.
+
+    tv.dtek.se is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    tv.dtek.se is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with tv.dtek.se.  If not, see <http://www.gnu.org/licenses/>.
+
+
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        title Dtek - TV
+    body
+        h1 Dtek - TV service
+        h2 Add new
+        form(action='/admin/addNew' method='post' enctype='multipart/form-data')
+            div
+                label(for='name' autoforcus) Name of post
+                br
+                input(type='text' id='name' name='name')
+            div
+                label(for='committee') Committee (förening/kommitté)
+                br
+                input(type='text' id='committee' name='committee')
+            div
+                label(for='startDate') Start Date (YYYY-MM-DD)
+                br
+                input(type='text' id='startDate' name='startDate' placeholder='YYYY-MM-DD')
+            div
+                label(for='endDate') End Date(YYYY-MM-DD)
+                br
+                input(type='date' id='endDate' name='endDate' placeholder='YYYY-MM-DD')
+            div
+                label(for='file') File (must be 1920x1080px)
+                br
+                input(type='file' id='file' name='file' accept='image/*')
+            div
+                br
+                button(type='submit') Upload advert!
+        script.
+            (function() {
+                'use strict';
+                var regDate = new RegExp('^20[0-9]{2}-[0-1][0-9]-[0-3][0-9]$');
+                var btn = document.getElementsByTagName('button')[0];
+                btn.onclick = function(event) {
+                    var err = '';
+                    if(document.getElementById('name').value.length === 0) {
+                        err+= 'Name is empty!\n';
+                    }
+                    if(document.getElementById('committee').value.length === 0) {
+                        err+= 'Committee is empty!\n';
+                    }
+                    if(document.getElementById('startDate').value.length === 0) {
+                        err+= 'Start date is invalid!\n';
+                    } else if(!regDate.test(document.getElementById('startDate').value)) {
+                        err+= 'Start date is invalid!\n';
+                    }
+                    if(document.getElementById('endDate').value.length === 0) {
+                        err+= 'End date is invalid!\n';
+                    } else if(!regDate.test(document.getElementById('endDate').value)) {
+                        err+= 'End date is invalid!\n';
+                    }
+                    if(document.getElementById('file').value.length === 0) {
+                        err+= 'Please choose a file!\n';
+                    }
+                    if(err) {
+                        event.preventDefault();
+                        alert(err);
+                    }
+                }
+            })();
+
+

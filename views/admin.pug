@@ -1,0 +1,80 @@
+//-
+
+    Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and 
+    Datateknologsektionen Chalmers Studentkår (https://www.dtek.se/)
+
+    This file is part of tv.dtek.se.
+
+    tv.dtek.se is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    tv.dtek.se is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with tv.dtek.se.  If not, see <http://www.gnu.org/licenses/>.
+
+
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        title Dtek - TV
+        style.
+            .old {
+                background: #CCC;
+            }
+            th {
+                font-size: 0.8em;
+            }
+            .currentFilename, .originalFilename {
+                font-size: 0.5em;
+            }
+    body
+        h1 Dtek - TV service
+        p='Hello ' + user.fullName + ' (' + user.cid + ')!'
+        p
+            a(href='/admin/addNew') Add new!
+        table
+            thead
+                th Active
+                th Name
+                th Committee
+                th Author
+                th Start date (inclusive)
+                th End date (inclusive)
+                th Original file name
+                th Current file name
+                th Delete
+            tbody
+                each advert in adverts
+                    tr(class=(advert.startDate < now && advert.endDate > now ? 'fresh' : 'old'))
+                        td=(advert.startDate < now && advert.endDate > now ? 'Yes' : 'No')
+                        td=advert.name
+                        td=advert.committee
+                        td=advert.author
+                        td=(new Date(advert.startDate*1000).toDateString())
+                        td=(new Date(advert.endDate*1000).toDateString())
+                        td.originalFilename=advert.originalFilename
+                        td.currentFilename
+                            a(href='/img/'+advert.currentFilename target='_blank')=advert.currentFilename
+                        td
+                            a.deleteAdvert(href='/admin/delete/'+advert.id) Delete this advert
+        script.
+            (function() {
+                'use strict';
+                var deleteAdverts = document.getElementsByClassName('deleteAdvert');
+                function reallyDelete(event) {
+                    if (!window.confirm("Do you really want to remove this?")) {
+                        event.preventDefault();
+                    }
+                }
+                for(var i = 0, ii = deleteAdverts.length; i < ii; i++) {
+                    deleteAdverts[i].onclick = reallyDelete;
+                }
+            })();

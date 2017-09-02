@@ -1,0 +1,17 @@
+{
+    "port": 8383,
+    "redirectToAuth": "https://auth-service.example.com/?from=https://tv.example.com",
+    "externalAuthServerConfig": {
+        "protocol": "http:",
+        "host": "127.0.0.1",
+        "port": 1234,
+        "path": "/"
+    },
+    "mysql": {
+        "connectionLimit": 5,
+        "host": "localhost",
+        "user": "userHere",
+        "password": "passwordHere",
+        "database": "databaseHere"
+    }
+}
