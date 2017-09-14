@@ -186,7 +186,7 @@ router.post('//addNew', (req, res) => { // Yes, double slash...
 
       let newFileName = hashString + ofn.substring(ofn.lastIndexOf('.'));
 
-      let fdw = fs.createWriteStream('../www/img/' + newFileName);
+      let fdw = fs.createWriteStream('serve/img/' + newFileName);
 
       fdr.pipe(fdw);
 
