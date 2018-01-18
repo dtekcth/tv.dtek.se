@@ -31,6 +31,8 @@
 
     var first = true;
 
+    var firstImageChange = true;
+
     /**
      *
      * nextImg
@@ -42,9 +44,10 @@
 
     function nextImg() {
         var newImg = currentImg + 1 < currentImages.length ? currentImg + 1 : 0;
-        if(currentImages[currentImg] !== currentImages[newImg]) {
+        if(currentImages[currentImg] !== currentImages[newImg] || firstImageChange) {
           showImg(newImg);
           currentImg = newImg;
+          firstImageChange = false;
         }
     }
 
