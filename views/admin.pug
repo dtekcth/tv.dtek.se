@@ -1,6 +1,6 @@
 //-
 
-    Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and 
+    Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and
     Datateknologsektionen Chalmers Studentkår (https://www.dtek.se/)
 
     This file is part of tv.dtek.se.
@@ -29,6 +29,9 @@ html
             .old {
                 background: #CCC;
             }
+            .prio {
+                background: #FA6607;
+            }
             th {
                 font-size: 0.8em;
             }
@@ -46,6 +49,7 @@ html
                 th Name
                 th Committee
                 th Author
+                th Prio
                 th Start date (inclusive)
                 th End date (inclusive)
                 th Original file name
@@ -53,13 +57,14 @@ html
                 th Delete
             tbody
                 each advert in adverts
-                    tr(class=(advert.startDate < now && advert.endDate > now ? 'fresh' : 'old'))
+                    tr(class=(advert.startDate < now && advert.endDate > now ? (advert.tempPriority === 1 ? 'prio' : 'fresh') : 'old'))
                         td=(advert.startDate < now && advert.endDate > now ? 'Yes' : 'No')
                         td=advert.name
                         td=advert.committee
                         td=advert.author
-                        td=(new Date(advert.startDate*1000).toDateString())
-                        td=(new Date(advert.endDate*1000).toDateString())
+                        td=(advert.tempPriority === 1 ? 'Yes' : 'No')
+                        td=(new Date(advert.startDate*1000).toString())
+                        td=(new Date(advert.endDate*1000).toString())
                         td.originalFilename=advert.originalFilename
                         td.currentFilename
                             a(href='/img/'+advert.currentFilename target='_blank')=advert.currentFilename
