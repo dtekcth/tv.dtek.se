@@ -70,6 +70,10 @@ html
                 var mStartDate = moment(startDate, 'YYYY-MM-DD HH:mm');
                 var mEndDate   = moment(endDate, 'YYYY-MM-DD HH:mm');
                 btn.onclick = function(event) {
+                    var startDate  = document.getElementById('startDate').value  + ' ' + document.getElementById('startTime').value;
+                    var endDate    = document.getElementById('endDate').value + ' ' + document.getElementById('endTime').value;
+                    var mStartDate = moment(startDate, 'YYYY-MM-DD HH:mm');
+                    var mEndDate   = moment(endDate, 'YYYY-MM-DD HH:mm');
                     var err = '';
                     if(document.getElementById('name').value.length === 0) {
                         err+= 'Name is empty!\n';
