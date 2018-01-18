@@ -1,5 +1,5 @@
 config.json
 .Trash*
 node_modules/
-img/*
+serve/img/*
 currentImages.json
