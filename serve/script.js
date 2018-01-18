@@ -2,7 +2,7 @@
 
 /*
 
-  Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and 
+  Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and
     Datateknologsektionen Chalmers Studentkår (https://www.dtek.se/)
 
   This file is part of tv.dtek.se.
@@ -42,8 +42,10 @@
 
     function nextImg() {
         var newImg = currentImg + 1 < currentImages.length ? currentImg + 1 : 0;
-        showImg(newImg);
-        currentImg = newImg;
+        if(currentImg !== newImg) {
+          showImg(newImg);
+          currentImg = newImg;
+        }
     }
 
     /**
