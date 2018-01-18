@@ -27,11 +27,10 @@
 
     var slideshow = document.getElementById('slideshow');
     var currentImg = 0;
+    var currentImgName = '';
     var currentImages = [];
 
     var first = true;
-
-    var firstImageChange = true;
 
     /**
      *
@@ -44,10 +43,10 @@
 
     function nextImg() {
         var newImg = currentImg + 1 < currentImages.length ? currentImg + 1 : 0;
-        if(currentImages[currentImg] !== currentImages[newImg] || firstImageChange) {
+        if(currentImgName !== currentImages[newImg]) {
           showImg(newImg);
           currentImg = newImg;
-          firstImageChange = false;
+          currentImgName = currentImages[newImg];
         }
     }
 
