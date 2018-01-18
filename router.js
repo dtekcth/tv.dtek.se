@@ -1,7 +1,7 @@
 
 /*
 
-  Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and 
+  Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and
     Datateknologsektionen Chalmers Studentkår (https://www.dtek.se/)
 
   This file is part of tv.dtek.se.
@@ -121,7 +121,10 @@ router.post('//addNew', (req, res) => { // Yes, double slash...
       name: null,
       committee: null,
       startDate: null,
+      startTime: null,
       endDate: null,
+      endTime: null,
+      tempPriority: null,
     };
 
     for(let prop in fields) {
@@ -147,10 +150,10 @@ router.post('//addNew', (req, res) => { // Yes, double slash...
       }
     }
 
-    let mEndDate = moment(data.endDate, 'YYYY-MM-DD');
-    let mStartDate = moment(data.startDate, 'YYYY-MM-DD');
+    let mEndDate = moment(data.endDate + ' ' + data.endTime, 'YYYY-MM-DD HH:mm');
+    let mStartDate = moment(data.startDate + ' ' + data.startTime, 'YYYY-MM-DD HH:mm');
 
-    if(!mStartDate.isValid() || 
+    if(!mStartDate.isValid() ||
       !mEndDate.isValid() ||
       mEndDate.isBefore(mStartDate)) {
       res.redirect('/admin/addNew?error=checkYourDates');
@@ -171,11 +174,6 @@ router.post('//addNew', (req, res) => { // Yes, double slash...
     hash.setEncoding('hex');
 
     // console.log(mEndDate.unix());
-
-    // The following add and subtract is needed to get the inclusiveness of the date.
-
-    mEndDate.add(1, 'days'); // Yes days, not day.
-    mEndDate.subtract(1, 'seconds'); // Yes seconds, not second.
 
     fd.on('end', () => {
       hash.end();
@@ -200,11 +198,12 @@ router.post('//addNew', (req, res) => { // Yes, double slash...
           ofn,
           newFileName,
           req.tv.data.user.cid,
+          data.tempPriority === 'on' ? 1 : 0,
         ];
 
         pool.query('INSERT INTO ' +
-          'advert(startDate, endDate, name, committee, originalFilename, currentFilename, author) '+
-          'VALUES (?, ?, ?, ?, ?, ?, ?);',
+          'advert(startDate, endDate, name, committee, originalFilename, currentFilename, author, tempPriority) '+
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
           poolQueryParameters,
           (err) => {
             if(err) {

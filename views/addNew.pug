@@ -1,6 +1,6 @@
 //-
 
-    Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and 
+    Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and
     Datateknologsektionen Chalmers Studentkår (https://www.dtek.se/)
 
     This file is part of tv.dtek.se.
@@ -42,11 +42,17 @@ html
             div
                 label(for='startDate') Start Date (YYYY-MM-DD) (inclusive)
                 br
-                input(type='text' id='startDate' name='startDate' placeholder='YYYY-MM-DD')
+                input(type='date' id='startDate' name='startDate' placeholder='YYYY-MM-DD')
+                input(type='time' id='startTime' name='startTime' placeholder='00:00' value='00:00')
             div
                 label(for='endDate') End Date(YYYY-MM-DD) (inclusive)
                 br
                 input(type='date' id='endDate' name='endDate' placeholder='YYYY-MM-DD')
+                input(type='time' id='endTime' name='startTime' placeholder='23:59' value='23:59')
+            div
+                label(for='tempPriority') Show only this advert (and other prioritized) during its active period
+                br
+                input(type='checkbox' id='tempPriority' name='tempPriority' autocomplete='off' value='')
             div
                 label(for='file') File (must be 1920x1080px)
                 br
@@ -59,6 +65,10 @@ html
             (function() {
                 'use strict';
                 var btn = document.getElementsByTagName('button')[0];
+                var startDate  = document.getElementById('startDate').value  + ' ' + document.getElementById('startTime').value;
+                var endDate    = document.getElementById('endDate').value + ' ' + document.getElementById('endTime').value;
+                var mStartDate = moment(startDate, 'YYYY-MM-DD HH:mm');
+                var mEndDate   = moment(endDate, 'YYYY-MM-DD HH:mm');
                 btn.onclick = function(event) {
                     var err = '';
                     if(document.getElementById('name').value.length === 0) {
@@ -69,20 +79,19 @@ html
                     }
                     if(document.getElementById('startDate').value.length === 0) {
                         err+= 'Start date is invalid!\n';
-                    } else if(!moment(document.getElementById('startDate').value, "YYYY-MM-DD").isValid()) {
-                        err+= 'Start date is invalid!\n';
+                    } else if(document.getElementById('startTime').value.length === 0) {
+                        err+= 'Start time is invalid!\n';
+                    } else if(!mStartDate.isValid()) {
+                        err+= 'Start date/time is invalid!\n';
                     }
                     if(document.getElementById('endDate').value.length === 0) {
                         err+= 'End date is invalid!\n';
-                    } else if(!moment(document.getElementById('endDate').value, "YYYY-MM-DD").isValid()) {
-                        err+= 'End date is invalid!\n';
-                    } else if(moment(document.getElementById('endDate').value, "YYYY-MM-DD").isBefore(
-                      moment(document.getElementById('startDate').value, "YYYY-MM-DD")) &&
-                      !moment(document.getElementById('endDate').value, "YYYY-MM-DD").isSame(
-                      moment(document.getElementById('startDate').value, "YYYY-MM-DD"))) {
-                        err+= 'End date is before start date!\n';
-                    } else if(!moment().isBefore(moment(document.getElementById('endDate').value, "YYYY-MM-DD"))) {
-                        err+= 'End date is before todays date!\n';
+                    } else if(document.getElementById('endTime').value.length === 0) {
+                        err+= 'End time is invalid!\n';
+                    } else if(!mEndDate.isValid()) {
+                        err+= 'End date/time is invalid!\n';
+                    } else if(mEndDate.isBefore(mStartDate)) {
+                        err+= 'End date/time is before start date/time!\n';
                     }
                     if(document.getElementById('file').value.length === 0) {
                         err+= 'Please choose a file!\n';

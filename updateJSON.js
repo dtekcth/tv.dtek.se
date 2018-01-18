@@ -1,7 +1,7 @@
 
 /*
 
-  Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and 
+  Copyright 2017 Emil Hemdal (https://emil.hemdal.se/) and
     Datateknologsektionen Chalmers Studentkår (https://www.dtek.se/)
 
   This file is part of tv.dtek.se.
@@ -34,6 +34,8 @@ let lastFiles = [ // One item to force the lastFiles.length === 0 below force on
   '1',
 ];
 
+let lastPriority = false;
+
 // Updates the JSON file on a regular basis if needed.
 function updateJSON() {
   let now = Math.round(Date.now()/1000);
@@ -41,46 +43,89 @@ function updateJSON() {
     now,
     now,
   ];
-  pool.query('SELECT currentFilename FROM advert WHERE startDate < ? AND endDate > ?;', nowArr, (err, results) => {
+  pool.query('SELECT currentFilename FROM advert WHERE tempPriority = 1 AND startDate < ? AND endDate > ?;', nowArr, (err, results) => {
     if(err) {
       console.error(err);
       return;
     }
-    let updated = true;
-    let files = [];
-    if(lastFiles.length === 0 && results.length === 0) {
-      return;
-    }
-    if(lastFiles.length === results.length) {
+    if(results.length > 0) {
+      let updated = true;
+      let files = [];
+      if(lastFiles.length === 0 && results.length === 0) {
+        return;
+      }
       for(let i = 0, ii = results.length; i < ii; i++) {
         files.push(results[i].currentFilename);
-        let currentUpdated = true;
-        for(let j = 0, jj = lastFiles.length; j < jj; j++) {
-          if(results[i].currentFilename === lastFiles[j]) {
-            currentUpdated = false;
-            break;
+      }
+      if(lastFiles.length === results.length && lastPriority) {
+        let existing = 0;
+        for(let i = 0, ii = results.length; i < ii; i++) {
+          for(let j = 0, jj = lastFiles.length; j < jj; j++) {
+            if(results[i].currentFilename === lastFiles[j]) {
+              existing += 1;
+              break;
+            }
           }
         }
-        if(!currentUpdated) {
+        if(existing === lastFiles.length) {
           updated = false;
         }
       }
-    } else {
-      for(let i = 0, ii = results.length; i < ii; i++) {
-        files.push(results[i].currentFilename);
+      if(updated) {
+        let writeFileSettings = {
+          encoding: 'utf8',
+          mode: 0o644,
+        };
+        fs.writeFile('./serve/currentImages.json', JSON.stringify(files), writeFileSettings, (err) => {
+          if(err) {
+            console.error('Failed writing JSON file!');
+            console.error(err);
+          }
+          lastFiles = files;
+        });
       }
-    }
-    if(updated) {
-      let writeFileSettings = {
-        encoding: 'utf8',
-        mode: 0o644, 
-      };
-      fs.writeFile('./serve/currentImages.json', JSON.stringify(files), writeFileSettings, (err) => {
+    } else {
+      pool.query('SELECT currentFilename FROM advert WHERE startDate < ? AND endDate > ?;', nowArr, (err, results) => {
         if(err) {
-          console.error('Failed writing JSON file!');
           console.error(err);
+          return;
         }
-        lastFiles = files;
+        let updated = true;
+        let files = [];
+        if(lastFiles.length === 0 && results.length === 0) {
+          return;
+        }
+        for(let i = 0, ii = results.length; i < ii; i++) {
+          files.push(results[i].currentFilename);
+        }
+        if(lastFiles.length === results.length && lastPriority) {
+          let existing = 0;
+          for(let i = 0, ii = results.length; i < ii; i++) {
+            for(let j = 0, jj = lastFiles.length; j < jj; j++) {
+              if(results[i].currentFilename === lastFiles[j]) {
+                existing += 1;
+                break;
+              }
+            }
+          }
+          if(existing === lastFiles.length) {
+            updated = false;
+          }
+        }
+        if(updated) {
+          let writeFileSettings = {
+            encoding: 'utf8',
+            mode: 0o644,
+          };
+          fs.writeFile('./serve/currentImages.json', JSON.stringify(files), writeFileSettings, (err) => {
+            if(err) {
+              console.error('Failed writing JSON file!');
+              console.error(err);
+            }
+            lastFiles = files;
+            lastPriority = false;
+          });
+        }
       });
     }
   });
