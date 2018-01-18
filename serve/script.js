@@ -42,7 +42,7 @@
 
     function nextImg() {
         var newImg = currentImg + 1 < currentImages.length ? currentImg + 1 : 0;
-        if(currentImg !== newImg) {
+        if(currentImages[currentImg] !== currentImages[newImg]) {
           showImg(newImg);
           currentImg = newImg;
         }
