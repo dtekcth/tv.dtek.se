@@ -46,30 +46,33 @@ html
         table
             thead
                 th Active
+                th Prio
                 th Name
                 th Committee
                 th Author
-                th Prio
                 th Start date (inclusive)
                 th End date (inclusive)
                 th Original file name
                 th Current file name
-                th Delete
+                th Action
             tbody
                 each advert in adverts
-                    tr(class=(advert.startDate < now && advert.endDate > now ? (advert.tempPriority === 1 ? 'prio' : 'fresh') : 'old'))
-                        td=(advert.startDate < now && advert.endDate > now ? 'Yes' : 'No')
+                    tr(class=(advert.startDate < now && advert.endDate > now && advert.active ? (advert.tempPriority === 1 ? 'prio' : 'fresh') : 'old'))
+                        td=(advert.startDate < now && advert.endDate > now && advert.active ? 'Yes' : 'No')
+                        td=(advert.tempPriority === 1 ? 'Yes' : 'No')
                         td=advert.name
                         td=advert.committee
                         td=advert.author
-                        td=(advert.tempPriority === 1 ? 'Yes' : 'No')
                         td=(new Date(advert.startDate*1000).toLocaleString('sv-SE'))
                         td=(new Date(advert.endDate*1000).toLocaleString('sv-SE'))
                         td.originalFilename=advert.originalFilename
                         td.currentFilename
                             a(href='/img/'+advert.currentFilename target='_blank')=advert.currentFilename
                         td
-                            a.deleteAdvert(href='/admin/delete/'+advert.id) Delete this advert
+                            if advert.active === 1
+                                a.disableAdvert(href='/admin/disable/'+advert.id) Disable this advert
+                            else
+                                a.enableAdvert(href='/admin/enable/'+advert.id) Enable this advert
         script.
             (function() {
                 'use strict';

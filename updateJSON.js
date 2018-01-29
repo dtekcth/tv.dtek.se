@@ -43,7 +43,7 @@ function updateJSON() {
     now,
     now,
   ];
-  pool.query('SELECT currentFilename FROM advert WHERE tempPriority = 1 AND startDate < ? AND endDate > ?;', nowArr, (err, results) => {
+  pool.query('SELECT currentFilename FROM advert WHERE active = 1 AND tempPriority = 1 AND startDate < ? AND endDate > ?;', nowArr, (err, results) => {
     if(err) {
       console.error(err);
       return;
@@ -85,7 +85,7 @@ function updateJSON() {
         });
       }
     } else {
-      pool.query('SELECT currentFilename FROM advert WHERE startDate < ? AND endDate > ?;', nowArr, (err, results) => {
+      pool.query('SELECT currentFilename FROM advert WHERE active = 1 AND startDate < ? AND endDate > ?;', nowArr, (err, results) => {
         if(err) {
           console.error(err);
           return;

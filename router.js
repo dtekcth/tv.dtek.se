@@ -101,12 +101,12 @@ router.get('//addNew', (req, res) => { // Yes, double slash...
   res.end(addNew(addNewData));
 });
 
-router.get('//delete/:id', (req, res) => { // Yes, double slash...
+function advertActiveState(req, res, active) {
   let poolQueryParameters = [
-    0,
+    active,
     req.params.id,
   ];
-  pool.query('UPDATE advert SET endDate = ? WHERE id = ?', poolQueryParameters, (err) => {
+  pool.query('UPDATE advert SET active = ? WHERE id = ?', poolQueryParameters, (err) => {
       if(err) {
         console.error(err);
         res.status(503);
@@ -118,6 +118,14 @@ router.get('//delete/:id', (req, res) => { // Yes, double slash...
       updateJSON();
     }
   );
+}
+
+router.get('//disable/:id', (req, res) => { // Yes, double slash...
+  advertActiveState(req, res, 0);
+});
+
+router.get('//enable/:id', (req, res) => { // Yes, double slash...
+  advertActiveState(req, res, 1);
 });
 
 router.post('//addNew', (req, res) => { // Yes, double slash...
