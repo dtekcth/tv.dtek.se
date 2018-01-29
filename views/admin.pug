@@ -63,8 +63,8 @@ html
                         td=advert.committee
                         td=advert.author
                         td=(advert.tempPriority === 1 ? 'Yes' : 'No')
-                        td=(new Date(advert.startDate*1000).toString())
-                        td=(new Date(advert.endDate*1000).toString())
+                        td=(new Date(advert.startDate*1000).toLocaleString('sv-SE'))
+                        td=(new Date(advert.endDate*1000).toLocaleString('sv-SE'))
                         td.originalFilename=advert.originalFilename
                         td.currentFilename
                             a(href='/img/'+advert.currentFilename target='_blank')=advert.currentFilename
