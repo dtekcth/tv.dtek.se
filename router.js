@@ -124,7 +124,6 @@ router.post('//addNew', (req, res) => { // Yes, double slash...
       startTime: null,
       endDate: null,
       endTime: null,
-      tempPriority: null,
     };
 
     for(let prop in fields) {
