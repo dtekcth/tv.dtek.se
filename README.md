@@ -32,16 +32,17 @@ Adverts table:
 ```SQL
 CREATE TABLE `advert` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `active` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `startDate` int(10) unsigned NOT NULL,
   `endDate` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `author` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `committee` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `originalFilename` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `currentFilename` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `author` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tempPriority` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ```
 
 Copy `config.json.dist` to `config.json` and configure it accordingly for your setup.
@@ -51,6 +52,9 @@ Run `npm install` to install the required dependencies.
 Run the service by running `node app.js`.
 
 I think that's it.
+
+### Dev tips
+You can run the service locally using `NODE_ENV=development node app.js` to ignore the authentication module. You still need a MySQL server though.
 
 ## Copyright
 

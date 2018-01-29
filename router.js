@@ -25,6 +25,8 @@ const config = require('./config.json');
 
 const updateJSON = require('./updateJSON.js');
 
+const process = require('process');
+
 const http = require('http');
 
 const fs = require('fs');
@@ -57,6 +59,17 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({extended: false, })); // Yes, let that comma be there. JSHint is setup to complain otherwise.
 
 router.use((req, res, next) => {
+  if(process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
+    req.tv = {
+      data: {
+        user: {
+          cid: 'testing',
+          fullName: 'Testing Testsson',
+        },
+      },
+    };
+    return next();
+  }
   if(!req.headers.cookie) {
     res.redirect(config.redirectToAuth + '/admin');
     return res.end();
@@ -201,8 +214,8 @@ router.post('//addNew', (req, res) => { // Yes, double slash...
         ];
 
         pool.query('INSERT INTO ' +
-          'advert(startDate, endDate, name, committee, originalFilename, currentFilename, author, tempPriority) '+
-          'VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
+          'advert(active, startDate, endDate, name, committee, originalFilename, currentFilename, author, tempPriority) '+
+          'VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?);',
           poolQueryParameters,
           (err) => {
             if(err) {
